@@ -2,6 +2,7 @@ package com.linkedin.collections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuestService {
 
@@ -14,8 +15,12 @@ public class GuestService {
 		 *  who have indicated the provided room as the first preference in their preferred
 		 *  room list. 
 		 */
+
+
 		
-		return null; 
+		return guests.stream()
+			.filter(g -> g.getPreferredRooms().indexOf(room) == 0)
+			.collect(Collectors.toList()); 
 
 	}
 
@@ -26,7 +31,20 @@ public class GuestService {
 		 *  ahead of those guests not in the program. Otherwise, guests are arranged in the
 		 *  order they were inserted.
 		 */
+		if (guest.isLoyaltyProgramMember() && !this.checkinList.isEmpty()) {
+			
+			int i = 0;
+			for(; i < this.checkinList.size(); i++) {
+				if (this.checkinList.get(i).isLoyaltyProgramMember()) {
+					continue;
+				}
 
+				break;
+			}
+			this.checkinList.add(i, guest);
+		} else {
+			this.checkinList.add(guest);
+		}
 	}
 	
 	public void swapPosition(Guest guest1, Guest guest2) {
@@ -36,6 +54,13 @@ public class GuestService {
 		 *  If guests are not currently in the list no action is required.
 		 */ 
 
+		int position1 = this.checkinList.indexOf(guest1);
+		int position2 = this.checkinList.indexOf(guest2);
+
+		if (position1 != -1 && position2 != -1) {
+			this.checkinList.set(position1, guest2);
+			this.checkinList.set(position2, guest1);
+		}
 	}
 
 	public List<Guest> getCheckInList() {
