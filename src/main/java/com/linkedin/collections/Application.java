@@ -3,8 +3,6 @@ package com.linkedin.collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class Application {
 
@@ -20,23 +18,12 @@ public class Application {
 		victoria.setPetFriendly(true);
 		
 		rooms.stream()
-			.filter(new Predicate<Room>() {
+			.filter(Room::isPetFriendly)
+			.forEach(room -> System.out.println(room.getName()));
 
-				@Override
-				public boolean test(Room room) {
-					System.out.format("Testing %s with result %b%n", room.getName(), room.isPetFriendly());
-					return room.isPetFriendly();
-				}
-				
-			}).forEach(new Consumer<Room>() {
-
-				@Override
-				public void accept(Room room) {
-					System.out.println(room.getName());
-				}
-				
-			});
-		
+				// rooms.stream()
+		// 	.filter(room -> room.isPetFriendly())
+		// 	.forEach(room -> System.out.println(room.getName()));
 	}
 }
 
