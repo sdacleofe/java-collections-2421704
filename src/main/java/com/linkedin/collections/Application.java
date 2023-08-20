@@ -17,16 +17,24 @@ public class Application {
 		Collection<Room> rooms = new ArrayList<>(Arrays.asList(cambridge, oxford, victoria, manchester));
 		oxford.setPetFriendly(true);
 		victoria.setPetFriendly(true);
-		
-		for(Room room : rooms) {
-			
-			if(room.isPetFriendly()) {
-				rooms.remove(room);
+
+		Iterator<Room> iterator = rooms.iterator();
+		while (iterator.hasNext()) {
+			Room room = iterator.next();
+				if(room.isPetFriendly()) {
+				iterator.remove();
 			}
-			
 		}
 		
-		System.out.println(rooms);
+		// Collection<Room> removeRooms = new ArrayList<>();
+		// for(Room room : rooms) {
+			
+		// }
+		// rooms.removeAll(removeRooms);
+		
+		rooms.stream()
+			.forEach(r -> System.out.println(r.getName()));
+		//System.out.println(rooms);
 		
 	}
 }
